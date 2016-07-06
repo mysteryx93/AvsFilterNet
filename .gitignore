@@ -1,3 +1,11 @@
+ipch/
+Debug/
+Release/
+.vs/
+
+*.db
+*.opendb
+
 # Compiled Object files
 *.slo
 *.lo
