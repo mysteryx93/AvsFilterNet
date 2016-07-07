@@ -25,7 +25,8 @@ namespace SAPStudio {
 				//try
 				//{
 					_frame = NULL;
-					delete _pframe;
+                    if (_pframe)
+					    delete _pframe;
 					_pframe=NULL;
 				//}
 				//catch (Exception ^)

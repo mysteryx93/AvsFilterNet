@@ -28,6 +28,8 @@ namespace SAPStudio {
 			/// <remarks>Derived classes must have a constructor that has the same signature as this method if you want to make it loadable by the plugin loader.</remarks>
 			AvisynthFilter(AVSValue^ args, ScriptEnvironment^ env);
 
+            virtual AVSValue^ Closing(ScriptEnvironment^ env);
+
 			/// <summary>Called when the specified frame is requested.</summary>
 			/// <param name='n'>Requested frame number.</param>
 			/// <param name='env'>Script environment object.</param>

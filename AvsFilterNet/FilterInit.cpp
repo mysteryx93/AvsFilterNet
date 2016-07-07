@@ -92,7 +92,11 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 	try
 	{
 		// Calls the constructor with the arguments provied.
-		return ((AvisynthFilter^)Activator::CreateInstance(filterType,gcnew SAPStudio::AvsFilterNet::AVSValue(args),gcnew SAPStudio::AvsFilterNet::ScriptEnvironment(env)))->GetNativeStub();
+        SAPStudio::AvsFilterNet::ScriptEnvironment^ envM = gcnew SAPStudio::AvsFilterNet::ScriptEnvironment(env);
+        AvisynthFilter^ Filter = ((AvisynthFilter^)Activator::CreateInstance(filterType, gcnew SAPStudio::AvsFilterNet::AVSValue(args), envM));
+        return Filter->GetNativeStub();
+        //return gcnew SAPStudio::AvsFilterNet::AVSValue(Filter->GetNativeStub())->GetNative();
+        //return Filter->Closing(envM)->GetNative();
 	}
 	catch (AvisynthError err) 
 	{
@@ -129,7 +133,7 @@ void LoadNetPluginImpl(String^ path, IScriptEnvironment* env, bool throwErr){
 	try
 	{
 		Assembly^ assm = Assembly::LoadFrom(path);
-		array<Object^> ^ attrs = assm->GetCustomAttributes(AvisynthFilterClassAttribute::typeid,true);
+		array<Object^> ^ attrs = assm->GetCustomAttributes(AvisynthFilterClassAttribute::typeid, true);
 		array<Type^> ^ ctorParams = gcnew array<Type^>(2);
 		ctorParams[0] = SAPStudio::AvsFilterNet::AVSValue::typeid;
 		ctorParams[1] = SAPStudio::AvsFilterNet::ScriptEnvironment::typeid;
