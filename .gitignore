@@ -5,6 +5,7 @@ Release/
 
 *.db
 *.opendb
+*.user
 
 # Compiled Object files
 *.slo

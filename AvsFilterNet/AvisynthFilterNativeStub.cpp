@@ -39,7 +39,6 @@ namespace SAPStudio {
 				errMsg=((char *)Marshal::StringToHGlobalAnsi(_impl->GetType()->Name + ": " + ex->ToString()).ToPointer());
 			}
 			if (errMsg) env->ThrowError(errMsg);
-			if (errMsg) MessageBoxA(0, errMsg, "Shouldn't reach here.", 0);
 			if (ret) return ret;
 			return child->GetFrame(n,env);
 		}

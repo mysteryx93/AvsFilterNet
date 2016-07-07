@@ -192,7 +192,10 @@ void AutoLoadPlugins(IScriptEnvironment* env){
 	}
 }
 
-extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit2(IScriptEnvironment* env) {
+const AVS_Linkage *AVS_linkage = 0;
+
+extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit3(IScriptEnvironment* env, const AVS_Linkage* const vectors) {
+    AVS_linkage = vectors;
     //env->AddFunction("SimpleSample", "c", Create_SimpleSample, 0);
     // The AddFunction has the following paramters:
     // AddFunction(Filtername , Arguments, Function to call,0);
