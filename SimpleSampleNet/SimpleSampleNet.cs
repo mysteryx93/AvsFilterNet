@@ -56,8 +56,8 @@ namespace SAPStudio.SimpleSampleNet {
         Clip WindowVideo;
         int SquareSize;
         VideoInfo vi;
-        public SimpleSampleNet(AVSValue args, ScriptEnvironment env)
-            : base(args, env) {
+
+        public SimpleSampleNet() : base() {
             // This is the constructor. It does not return any value, and is always used, 
             //  when an instance of the class is created.
 
@@ -66,9 +66,13 @@ namespace SAPStudio.SimpleSampleNet {
 
             //Save the parameter for future use.
             //Remember index 0 is the child clip saved in base class.
+        }
+
+        public override AVSValue Initialize(AVSValue args, ScriptEnvironment env) {
             WindowVideo = args[1].AsClip();
             SquareSize = args[2].AsInt(0);
             vi = GetVideoInfo();
+            return null;
         }
 
         protected override void Dispose(bool disposing) {
@@ -94,7 +98,7 @@ namespace SAPStudio.SimpleSampleNet {
             // Request frame 'n' from the child (source) clip.
             VideoFrame window = WindowVideo.GetFrame(n, env);
             // Request frame "'n" from the WindowVideo clip
-            VideoFrame dst = NewVideoFrame();
+            VideoFrame dst = NewVideoFrame(env);
             // Construct a frame based on the information of the current frame.
 
             Stream srcp = src.GetReadStream();

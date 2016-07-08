@@ -2,10 +2,10 @@
 
 namespace SAPStudio {
 	namespace AvsFilterNet {
-		AvisynthFilterNativeStub::AvisynthFilterNativeStub(PClip child, AvisynthFilter^ impl) : GenericVideoFilter(child) {
+		AvisynthFilterNativeStub::AvisynthFilterNativeStub(PClip _child, AvisynthFilter^ impl) : child(_child) {
 			_impl = impl;
 		}
-		AvisynthFilterNativeStub::AvisynthFilterNativeStub(AvisynthFilter^ impl) : GenericVideoFilter(NULL) {
+		AvisynthFilterNativeStub::AvisynthFilterNativeStub(AvisynthFilter^ impl) {
 			memset(&vi, 0, sizeof(vi));
 			_impl = impl;
 		}

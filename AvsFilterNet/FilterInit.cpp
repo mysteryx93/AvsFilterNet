@@ -93,10 +93,20 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 	{
 		// Calls the constructor with the arguments provied.
         SAPStudio::AvsFilterNet::ScriptEnvironment^ envM = gcnew SAPStudio::AvsFilterNet::ScriptEnvironment(env);
-        AvisynthFilter^ Filter = ((AvisynthFilter^)Activator::CreateInstance(filterType, gcnew SAPStudio::AvsFilterNet::AVSValue(args), envM));
-        return Filter->GetNativeStub();
-        //return gcnew SAPStudio::AvsFilterNet::AVSValue(Filter->GetNativeStub())->GetNative();
-        //return Filter->Closing(envM)->GetNative();
+        AvisynthFilter^ Filter = ((AvisynthFilter^)Activator::CreateInstance(filterType));
+        if (args[0].IsClip())
+            Filter->SetChild(gcnew Clip(args[0].AsClip()));
+        // If Initialize returns a value, we'll return that value and skip this class.
+        SAPStudio::AvsFilterNet::AVSValue^ CancelLoad = Filter->Initialize(gcnew SAPStudio::AvsFilterNet::AVSValue(args), envM);
+        if (CancelLoad) {
+            Filter->SetChild(nullptr);
+            return CancelLoad->GetNative();
+        } 
+        else {
+            // If we're using this class, Finalize will be called at the end.
+            SAPStudio::AvsFilterNet::AVSValue^ V = gcnew SAPStudio::AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
+            return Filter->Finalize(V, envM)->GetNative();
+        }
 	}
 	catch (AvisynthError err) 
 	{
@@ -134,9 +144,9 @@ void LoadNetPluginImpl(String^ path, IScriptEnvironment* env, bool throwErr){
 	{
 		Assembly^ assm = Assembly::LoadFrom(path);
 		array<Object^> ^ attrs = assm->GetCustomAttributes(AvisynthFilterClassAttribute::typeid, true);
-		array<Type^> ^ ctorParams = gcnew array<Type^>(2);
-		ctorParams[0] = SAPStudio::AvsFilterNet::AVSValue::typeid;
-		ctorParams[1] = SAPStudio::AvsFilterNet::ScriptEnvironment::typeid;
+		array<Type^> ^ ctorParams = gcnew array<Type^>(0);
+		//ctorParams[0] = SAPStudio::AvsFilterNet::AVSValue::typeid;
+		//ctorParams[1] = SAPStudio::AvsFilterNet::ScriptEnvironment::typeid;
 		for (int i = 0; i < attrs->Length; i++)
 		{
 			try

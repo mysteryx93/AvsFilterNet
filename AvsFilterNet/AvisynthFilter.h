@@ -8,27 +8,24 @@ namespace SAPStudio {
 			Clip^ _child;
 			bool _initialized;
 			VideoInfo _vi;
-			IScriptEnvironment* _nenv;
-			ScriptEnvironment^ _env;
-			void CheckEnvPointer(IScriptEnvironment *env);
-		protected:
-			
-			/// <summary>The child clip. It will be used in methods that is not overrode or when null (or Nothing in Visual Basic) is returned in <see cref="GetFrame"/>.</summary>
-			property Clip^ Child { Clip^ get(); };
-			
-			/// <summary>Sets a <see cref="Clip"/> as new child clip.</summary>
-			/// <remarks>This method can only be called during filter initialization, otherwise an exception will be thrown.</remarks>
-			void SetChild(Clip^ child);
-			/// <summary>Sets new video info. If you want to use a output format different from that of child clip, you must call this method to specify it.</summary>
-			/// <remarks>This method can only be called during filter initialization, otherwise an exception will be thrown. Additionally, don't call <see cref="SetChild"/> after new video info is set as it will be overwritten.</remarks>
-			void SetVideoInfo(VideoInfo% vi); 
 		public:
 			~AvisynthFilter();
 			/// <summary>The constructor of <see cref="AvisynthFilter"/>.</summary>
 			/// <remarks>Derived classes must have a constructor that has the same signature as this method if you want to make it loadable by the plugin loader.</remarks>
-			AvisynthFilter(AVSValue^ args, ScriptEnvironment^ env);
+			AvisynthFilter();
 
-            virtual AVSValue^ Closing(ScriptEnvironment^ env);
+            /// <summary>The child clip. It will be used in methods that is not overrode or when null (or Nothing in Visual Basic) is returned in <see cref="GetFrame"/>.</summary>
+            property Clip^ Child { Clip^ get(); };
+
+            /// <summary>Sets a <see cref="Clip"/> as new child clip.</summary>
+            /// <remarks>This method can only be called during filter initialization, otherwise an exception will be thrown.</remarks>
+            void SetChild(Clip^ child);
+            /// <summary>Sets new video info. If you want to use a output format different from that of child clip, you must call this method to specify it.</summary>
+            /// <remarks>This method can only be called during filter initialization, otherwise an exception will be thrown. Additionally, don't call <see cref="SetChild"/> after new video info is set as it will be overwritten.</remarks>
+            void SetVideoInfo(VideoInfo% vi);
+            
+            virtual AVSValue^ Initialize(AVSValue^ args, ScriptEnvironment^ env);
+            virtual AVSValue^ Finalize(AVSValue^ clip, ScriptEnvironment^ env);
 
 			/// <summary>Called when the specified frame is requested.</summary>
 			/// <param name='n'>Requested frame number.</param>
@@ -42,9 +39,9 @@ namespace SAPStudio {
 			VideoInfo GetVideoInfo();
 
 			/// <summary>Creates a new <see cref="VideoFrame"/> using <see cref="VideoFrame"/> of the filter itself.</summary>
-			VideoFrame^ NewVideoFrame();
+			VideoFrame^ NewVideoFrame(ScriptEnvironment^ env);
 			/// <summary>Creates a new <see cref="VideoFrame"/> using <see cref="VideoFrame"/> of the filter itself, with specified frame align.</summary>
-			VideoFrame^ NewVideoFrame(int align);
+			VideoFrame^ NewVideoFrame(int align, ScriptEnvironment^ env);
 
 		internal:
 			PVideoFrame GetFrame(int n, IScriptEnvironment* env);
