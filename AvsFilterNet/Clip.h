@@ -1,8 +1,5 @@
-
-
 #ifndef CLIP_H
 #define CLIP_H
-
 
 typedef PClip PNativeClip;
 typedef IClip NativeClip;

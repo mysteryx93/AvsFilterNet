@@ -2,7 +2,7 @@
 using SAPStudio.AvsFilterNet;
 using System.Windows.Media.Imaging;
 
-[assembly: AvisynthFilterClass(typeof(SAPStudio.SimpleSampleNet.LoadImageNet), "LoadImageNet", "[path]s")]
+[assembly: AvisynthFilterClass(typeof(SAPStudio.SimpleSampleNet.LoadImageNet), "LoadImageNet", "[path]s", MtMode.MULTI_INSTANCE)]
 namespace SAPStudio.SimpleSampleNet {
     public class LoadImageNet : AvisynthFilter {
         VideoInfo vi;

@@ -16,7 +16,6 @@ namespace SAPStudio {
 
 			ColorSpaces pixel_type;                // changed to int as of 2.5
 
-
 			int audio_samples_per_second;   // 0 means no audio
 			AudioSampleType sample_type;                // as of 2.5
 			__int64 num_audio_samples;      // changed as of 2.5

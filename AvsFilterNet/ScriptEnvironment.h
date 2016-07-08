@@ -1,23 +1,16 @@
-// AvsFilterNet.h
-
-
-
 #ifndef SCRIPTENVIRONMENT_H
 #define SCRIPTENVIRONMENT_H
-
 
 #include <stdlib.h>
 using namespace System::Runtime::InteropServices;
 using namespace System;
 using namespace System::Collections::Generic;
 
-
 namespace SAPStudio {
 	namespace AvsFilterNet {
 		ref class AVSValueCollector;
 		//Wrapper of IScriptEnvironment
-		public ref class ScriptEnvironment sealed
-		{
+		public ref class ScriptEnvironment sealed {
 
 		private:
 			IScriptEnvironment * _env;
@@ -27,7 +20,7 @@ namespace SAPStudio {
 			IScriptEnvironment * GetNative();
 
 		public:
-
+			ScriptEnvironment2^ GetEnv2();
 			CPUFlags GetCPUFlags();
 			String^ SaveString(String ^s);
 			String^ SaveString(String ^s, int length);
@@ -73,8 +66,6 @@ namespace SAPStudio {
 
 			VideoFrame^ SubframePlanar(VideoFrame^ src, int rel_offset, int new_pitch, int new_row_size, int new_height, int rel_offsetU, int rel_offsetV, int new_pitchUV);
 		};
-
 	};
 };
-
 #endif

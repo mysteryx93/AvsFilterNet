@@ -3,7 +3,6 @@
 
 namespace SAPStudio {
 	namespace AvsFilterNet {
-
 		NativeString::NativeString(String^ s) {
 			ip = Marshal::StringToHGlobalAnsi(s);
 			str = static_cast<const char*>(ip.ToPointer());
@@ -15,11 +14,6 @@ namespace SAPStudio {
 			return str;
 		};
 
-		//NativeString::!NativeString(){
-		//	System::Diagnostics::Debug::WriteLine("NativeString::!NativeString start");
-		//	CleanUp();
-		//	System::Diagnostics::Debug::WriteLine("NativeString::!NativeString end");
-		//};
 		void NativeString::CleanUp()
 		{
 			if (str) {

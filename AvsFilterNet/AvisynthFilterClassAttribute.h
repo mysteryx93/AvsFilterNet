@@ -8,6 +8,7 @@ namespace SAPStudio {
 			Type^ FilterType;
 			String^ FilterName;
 			String^ Arguments;
+            MtMode MultiThreadingMode;
 
 			/// <summary>
 			///     The constructor of AvisynthFilterClassAttribute.
@@ -28,10 +29,15 @@ namespace SAPStudio {
 			/// For example, if your type string is "is+f", then the integer argument will be args[0], <br/>
 			/// the string arguments will be args[1][0], args[1][1], etc. , and the float argument will be args[2].<br/>
 			/// '.' matches a single argument of any type. To match multiple arguments of any type, use ".*" or ".+". </param>
-			AvisynthFilterClassAttribute(Type^ type, String^ filterName, String^ arguments) {
+
+			AvisynthFilterClassAttribute(Type^ type, String^ filterName, String^ arguments) : AvisynthFilterClassAttribute(type, filterName, arguments, MtMode::UNKNOWN) {
+			}
+
+			AvisynthFilterClassAttribute(Type^ type, String^ filterName, String^ arguments, MtMode multiThreadingMode) {
 				this->FilterType = type;
 				this->FilterName = filterName;
 				this->Arguments = arguments;
+                this->MultiThreadingMode = multiThreadingMode;
 			}
 		};
 	};

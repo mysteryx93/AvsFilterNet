@@ -2,7 +2,6 @@
 #ifndef VIDEOFRAME_H
 #define VIDEOFRAME_H
 
-
 typedef VideoFrame NativeVideoFrame;
 typedef PVideoFrame PNativeVideoFrame;
 
@@ -10,10 +9,8 @@ using namespace System::Runtime::InteropServices;
 using namespace System;
 using namespace System::IO;
 
-
 namespace SAPStudio {
 	namespace AvsFilterNet {
-
 		public ref class VideoFrame sealed {
 		private:
 			NativeVideoFrame* _frame;
@@ -50,16 +47,15 @@ namespace SAPStudio {
 
 			IntPtr GetReadPtr();
 			IntPtr GetReadPtr(YUVPlanes plane);
-            Stream^ GetReadStream();
-            Stream^ GetReadStream(YUVPlanes plane);
+			Stream^ GetReadStream();
+			Stream^ GetReadStream(YUVPlanes plane);
 
 			IntPtr GetWritePtr();
 			IntPtr GetWritePtr(YUVPlanes plane);
-            Stream^ GetWriteStream();
-            Stream^ GetWriteStream(YUVPlanes plane);
+			Stream^ GetWriteStream();
+			Stream^ GetWriteStream(YUVPlanes plane);
 
 			bool IsWritable();
-
 		};
 	}
 }
