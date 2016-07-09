@@ -11,7 +11,6 @@ namespace SAPStudio {
 		public:
 			~AvisynthFilter();
 			/// <summary>The constructor of <see cref="AvisynthFilter"/>.</summary>
-			/// <remarks>Derived classes must have a constructor that has the same signature as this method if you want to make it loadable by the plugin loader.</remarks>
 			AvisynthFilter();
 
             /// <summary>The child clip. It will be used in methods that is not overrode or when null (or Nothing in Visual Basic) is returned in <see cref="GetFrame"/>.</summary>
@@ -24,8 +23,17 @@ namespace SAPStudio {
             /// <remarks>This method can only be called during filter initialization, otherwise an exception will be thrown. Additionally, don't call <see cref="SetChild"/> after new video info is set as it will be overwritten.</remarks>
             void SetVideoInfo(VideoInfo% vi);
             
-            virtual AVSValue^ Initialize(AVSValue^ args, ScriptEnvironment^ env);
-            virtual AVSValue^ Finalize(AVSValue^ clip, ScriptEnvironment^ env);
+			/// <summary>Called when the class is being created. Use this function instead of overriding the constructor.</summary>
+			/// <param name='args'>The AviSynth arguments of the plugin.</param>
+			/// <param name='env'>Script environment object.</param>
+			/// <returns>A <see cref="AVSValue"/>. Return null (or Nothing in Visual Basic) to proceed with the execution of the plugin. 
+			/// If not null, such as when instead calling other filters, this instance will be ignored and disposed, and the returned <see cref="AVSValue"> will be used instead.</returns>
+			virtual AVSValue^ Initialize(AVSValue^ args, ScriptEnvironment^ env);
+			/// <summary>Called at the end of the filter creation and allows executing additional post-processing plugins.</param>
+			/// <param name='clip'>The output clip of this plugin.</param>
+			/// <param name='env'>Script environment object.</param>
+			/// <returns>A <see cref="AVSValue"/>A <see cref="AVSValue"/>. The plugin chain to return to AviSynth for processing.</returns>
+			virtual AVSValue^ Finalize(AVSValue^ clip, ScriptEnvironment^ env);
 
 			/// <summary>Called when the specified frame is requested.</summary>
 			/// <param name='n'>Requested frame number.</param>

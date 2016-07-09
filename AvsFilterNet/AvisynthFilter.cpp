@@ -3,14 +3,7 @@
 namespace SAPStudio {
     namespace AvsFilterNet {
         AvisynthFilter::AvisynthFilter() {
-            //if (args[0]->IsClip()) {
-            //    _child = args[0]->AsClip();
-            //    _stub = new AvisynthFilterNativeStub(_child->GetNative(), this);
-            //    _vi = VideoInfo::FromNative(&(_stub->GetVideoInfo()));
-            //}
-            //else {
-                _stub = new AvisynthFilterNativeStub(this);
-            //}
+            _stub = new AvisynthFilterNativeStub(this);
             _initialized = false;
         }
 
@@ -22,31 +15,35 @@ namespace SAPStudio {
             }
         }
 
-        AVSValue^ AvisynthFilter::Initialize(AVSValue^ args, ScriptEnvironment^ env) { return args; }
-        AVSValue^ AvisynthFilter::Finalize(AVSValue^ clip, ScriptEnvironment^ env) { return clip; }
+        AVSValue^ AvisynthFilter::Initialize(AVSValue^ args, ScriptEnvironment^ env) { 
+			return args; 
+		}
+
+        AVSValue^ AvisynthFilter::Finalize(AVSValue^ clip, ScriptEnvironment^ env) {
+			return clip; 
+		}
 
         Clip^ AvisynthFilter::Child::get() {
             return _child;
         }
 
-        //VideoFrame^ AvisynthFilter::GetFrame(int n, ScriptEnvironment^ env)	{
-        //	return Child->GetFrame(n,env); //fetch frame from child
-        //}
-
         void AvisynthFilter::GetAudio(IntPtr buf, __int64 start, __int64 count, ScriptEnvironment^ env) {
-            _child->GetAudio(buf, start, count, env);
+            if (_child) 
+				_child->GetAudio(buf, start, count, env);
         }
 
         bool AvisynthFilter::GetParity(int n) {
-            return _child->GetParity(n);
+            return _child ? _child->GetParity(n) : false;
         }
+
         int AvisynthFilter::SetCacheHints(CacheType cachehints, int frame_range) {
-            return _child->SetCacheHints(cachehints, frame_range);
+            return _child ? _child->SetCacheHints(cachehints, frame_range) : 0;
         }
 
         VideoInfo AvisynthFilter::GetVideoInfo() {
             return _vi;
         }
+
         void AvisynthFilter::SetVideoInfo(VideoInfo% vi) {
             if (_initialized) throw gcnew InvalidOperationException("You can only set VideoInfo during initialization.");
             _vi = vi;
@@ -71,6 +68,7 @@ namespace SAPStudio {
         VideoFrame^ AvisynthFilter::NewVideoFrame(ScriptEnvironment^ env) {
             return NewVideoFrame(FRAME_ALIGN, env);
         }
+
         VideoFrame^ AvisynthFilter::NewVideoFrame(int align, ScriptEnvironment^ env) {
             return env->NewVideoFrame(_vi, align);
         }
@@ -84,6 +82,7 @@ namespace SAPStudio {
             }
             return NULL;
         }
+
         void AvisynthFilter::GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env) {
             GetAudio(IntPtr(buf), start, count, gcnew SAPStudio::AvsFilterNet::ScriptEnvironment(env));
         }

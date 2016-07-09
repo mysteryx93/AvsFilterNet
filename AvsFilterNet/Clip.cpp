@@ -1,67 +1,57 @@
 #include "StdAfx.h"
 
-
-
 namespace SAPStudio {
-    namespace AvsFilterNet {
-
-        //for calling AddRef and Release, is it nesessary?
-        Clip::Clip(PNativeClip clip) {
-            _pclip = (new PNativeClip(clip));
-            _clip = (NativeClip*)(void*)*_pclip;
-        }
-        Clip::~Clip() {
-            CleanUp();
-        }
-        Clip::!Clip() {
+	namespace AvsFilterNet {
+		//for calling AddRef and Release, is it nesessary?
+		Clip::Clip(PNativeClip clip) {
+			_pclip = (new PNativeClip(clip));
+			_clip = (NativeClip*)(void*)*_pclip;
+		}
+		Clip::~Clip() {
+			CleanUp();
+		}
+		Clip::!Clip() {
 #if DEBUG
-            System::Diagnostics::Debug::WriteLine("Clip::!Clip start");
+			System::Diagnostics::Debug::WriteLine("Clip::!Clip start");
 #endif
-            CleanUp();
+			CleanUp();
 #if DEBUG
-            System::Diagnostics::Debug::WriteLine("Clip::!Clip end");
+			System::Diagnostics::Debug::WriteLine("Clip::!Clip end");
 #endif
-        }
-        void Clip::CleanUp()
-        {
-            //try
-            //{
+		}
+		void Clip::CleanUp()
+		{
+			_clip = NULL;
+			delete _pclip;
+			_pclip = NULL;
+		}
 
-            _clip = NULL;
+		PNativeClip Clip::GetNative() {
+			return PNativeClip(_clip);
+		}
 
-            delete _pclip;
+		int Clip::GetVersion() {
+			return (_clip)->GetVersion();
+		}
 
-            _pclip = NULL;
-            //}
-            //catch (Exception ^)
-            //{
-            //	
-            //}
-        }
-        PNativeClip Clip::GetNative() {
-            return PNativeClip(_clip);
-        }
+		VideoFrame^ Clip::GetFrame(int n, ScriptEnvironment^ env) {
+			return gcnew VideoFrame((_clip)->GetFrame(n, env->GetNative()));
+		}
 
-        int Clip::GetVersion() { 
-            return (_clip)->GetVersion(); 
-        }
+		bool Clip::GetParity(int n) {
+			return (_clip)->GetParity(n);
+		}
 
-        VideoFrame^ Clip::GetFrame(int n, ScriptEnvironment^ env) { 
-            return gcnew VideoFrame((_clip)->GetFrame(n, env->GetNative())); 
-        }
+		void Clip::GetAudio(IntPtr buf, Int64 start, Int64 count, ScriptEnvironment^ env) {
+			(_clip)->GetAudio(buf.ToPointer(), start, count, env->GetNative());
+		}
 
-        bool Clip::GetParity(int n) { return (_clip)->GetParity(n); }
+		int Clip::SetCacheHints(CacheType cachehints, int frame_range) {
+			return (_clip)->SetCacheHints((int)cachehints, frame_range);
+		}
 
-        void Clip::GetAudio(IntPtr buf, Int64 start, Int64 count, ScriptEnvironment^ env) {
-            (_clip)->GetAudio(buf.ToPointer(), start, count, env->GetNative());
-        }
-
-        int Clip::SetCacheHints(CacheType cachehints, int frame_range) {
-            return (_clip)->SetCacheHints((int)cachehints, frame_range);
-        }
-
-        VideoInfo Clip::GetVideoInfo() {
-            return VideoInfo::FromNative(&((_clip)->GetVideoInfo()));
-        }
-    }
+		VideoInfo Clip::GetVideoInfo() {
+			return VideoInfo::FromNative(&((_clip)->GetVideoInfo()));
+		}
+	}
 }

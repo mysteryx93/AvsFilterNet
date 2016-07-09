@@ -10,32 +10,34 @@ namespace SAPStudio {
 		{
 			AVSValueCollector::BeginCollection();
 		}
+
 		AVSValueCollector::~AVSValueCollector()
 		{
 			AVSValueCollector::EndCollection();
 		}
-		
+
 		void AVSValueCollector::OnAVSValueCreate(AVSValue^ value) {
 			int id = Thread::CurrentThread->ManagedThreadId;
 			if (!_values->ContainsKey(id)) return;
-			if (_values[id]->Count==0) return;
+			if (_values[id]->Count == 0) return;
 			_values[id]->Peek()->Add(value);
 		}
-		void AVSValueCollector::OnAVSValueDispose(AVSValue^ value){
+
+		void AVSValueCollector::OnAVSValueDispose(AVSValue^ value) {
 			int id = Thread::CurrentThread->ManagedThreadId;
 			if (!_values->ContainsKey(id)) return;
-			if (_values[id]->Count==0) return;
+			if (_values[id]->Count == 0) return;
 			_values[id]->Peek()->Remove(value);
 		}
 
 
-		void AVSValueCollector::BeginCollection(){
+		void AVSValueCollector::BeginCollection() {
 			int id = Thread::CurrentThread->ManagedThreadId;
 			if (!_values->ContainsKey(id)) {
 				Monitor::Enter(AVSValueCollector::typeid);
 				try
 				{
-					if (!_values->ContainsKey(id)) _values->Add(id,gcnew Stack<List<AVSValue^>^>);
+					if (!_values->ContainsKey(id)) _values->Add(id, gcnew Stack<List<AVSValue^>^>);
 				}
 				finally
 				{
@@ -44,8 +46,9 @@ namespace SAPStudio {
 			}
 			_values[id]->Push(gcnew List<AVSValue^>);
 		}
-		void AVSValueCollector::EndCollection(){
-			List<AVSValue^>^ values=_values[Thread::CurrentThread->ManagedThreadId]->Pop();
+
+		void AVSValueCollector::EndCollection() {
+			List<AVSValue^>^ values = _values[Thread::CurrentThread->ManagedThreadId]->Pop();
 			for (int i = 0; i < values->Count; i++)
 			{
 				values[i]->CollectorDispose();
@@ -53,5 +56,4 @@ namespace SAPStudio {
 			values->Clear();
 		}
 	}
-
 }

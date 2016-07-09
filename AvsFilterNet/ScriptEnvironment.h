@@ -48,6 +48,9 @@ namespace SAPStudio {
 			bool MakeWritable(VideoFrame^ pvf);
 
 			void BitBlt(IntPtr dstp, int dst_pitch, IntPtr srcp, int src_pitch, int row_size, int height);
+			void BitBlt(IntPtr dstp, int dst_pitch, array<BYTE>^ srcp, int src_pitch, int row_size, int height);
+			void BitBlt(array<BYTE>^ dstp, int dst_pitch, IntPtr srcp, int src_pitch, int row_size, int height);
+			void BitBlt(array<BYTE>^ dstp, int dst_pitch, array<BYTE>^ srcp, int src_pitch, int row_size, int height);
 
 			//typedef void (__cdecl *ShutdownFunc)(void* user_data, IScriptEnvironment* env);
 			//virtual void __stdcall AtExit(ShutdownFunc function, void* user_data) = 0;

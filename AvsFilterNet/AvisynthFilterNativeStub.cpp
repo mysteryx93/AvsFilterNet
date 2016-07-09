@@ -5,10 +5,12 @@ namespace SAPStudio {
 		AvisynthFilterNativeStub::AvisynthFilterNativeStub(PClip _child, AvisynthFilter^ impl) : child(_child) {
 			_impl = impl;
 		}
+
 		AvisynthFilterNativeStub::AvisynthFilterNativeStub(AvisynthFilter^ impl) {
 			memset(&vi, 0, sizeof(vi));
 			_impl = impl;
 		}
+
 		AvisynthFilterNativeStub::~AvisynthFilterNativeStub(){
 			delete _impl;
 			_impl=nullptr;

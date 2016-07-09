@@ -2,7 +2,6 @@
 
 namespace SAPStudio {
 	namespace AvsFilterNet {
-
 		AVSValue::AVSValue() { _value = new NativeAVSValue(); AVSValueCollector::OnAVSValueCreate(this); }
 		AVSValue::AVSValue(Clip ^ c) { _value = new NativeAVSValue(c->GetNative()); AVSValueCollector::OnAVSValueCreate(this); }
 		AVSValue::AVSValue(bool b) { _value = new NativeAVSValue(b); AVSValueCollector::OnAVSValueCreate(this); }
@@ -23,8 +22,6 @@ namespace SAPStudio {
 			_value = new NativeAVSValue(_arrptr,a->Length);
 			AVSValueCollector::OnAVSValueCreate(this);
 		}
-
-		//AVSValue(const AVSValue& v) { Assign(&v, true); }
 
 		AVSValue::~AVSValue() { 
 			CleanUp();
@@ -57,19 +54,9 @@ namespace SAPStudio {
 				_nts=nullptr;
 			}
 			if (_arrptr) {
-				//for (int i = 0; i < ArraySize(); i++)
-				//{
-				//	_arrptr[i].~AVSValue();
-				//}
-				//free(_arrptr);
 				delete[] _arrptr;
 				_arrptr = NULL;
 			}
-			//}
-			//catch (Exception^)
-			//{
-			//	
-			//}
 		}
 
 		bool AVSValue::Defined()  { return _value->Defined(); };

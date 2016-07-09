@@ -5,13 +5,11 @@ using namespace System::Diagnostics;
 using namespace System::Reflection;
 using namespace System;
 
-NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScriptEnvironment *env)
-{
+NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScriptEnvironment *env) {
 	using namespace SAPStudio::AvsFilterNet;
 	Type ^ filterType = (Type ^)GCHandle::FromIntPtr(IntPtr(user_data)).Target;
 	AVSValueCollector^ col = gcnew AVSValueCollector;
-	try
-	{
+	try {
 		// Calls the constructor with the arguments provied.
 		SAPStudio::AvsFilterNet::ScriptEnvironment^ envM = gcnew SAPStudio::AvsFilterNet::ScriptEnvironment(env);
 		AvisynthFilter^ Filter = ((AvisynthFilter^)Activator::CreateInstance(filterType));
@@ -29,8 +27,7 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 			return Filter->Finalize(V, envM)->GetNative();
 		}
 	}
-	catch (AvisynthError err)
-	{
+	catch (AvisynthError err) {
 		// To prevent problems, we always duplicate error messages
 		env->ThrowError(_strdup(err.msg));
 	}
@@ -40,20 +37,17 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 	catch (Exception^ ex) {
 		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(filterType->Name + " initialization error: " + ex->ToString()).ToPointer());
 	}
-	finally
-	{
+	finally {
 		delete col;
 	}
 	return NativeAVSValue();
 }
 
 NativeAVSValue __cdecl Create_NetPlugin(NativeAVSValue args, void* user_data, IScriptEnvironment* env) {
-	try
-	{
+	try {
 		return CreateNetPluginImpl(args, user_data, env);
 	}
-	finally
-	{
+	finally {
 		System::GC::Collect(2);
 	}
 }
@@ -61,17 +55,14 @@ NativeAVSValue __cdecl Create_NetPlugin(NativeAVSValue args, void* user_data, IS
 
 void LoadNetPluginImpl(String^ path, IScriptEnvironment* env, bool throwErr) {
 	using namespace SAPStudio::AvsFilterNet;
-	try
-	{
+	try {
 		Assembly^ assm = Assembly::LoadFrom(path);
 		array<Object^> ^ attrs = assm->GetCustomAttributes(AvisynthFilterClassAttribute::typeid, true);
 		array<Type^> ^ ctorParams = gcnew array<Type^>(0);
 		//ctorParams[0] = SAPStudio::AvsFilterNet::AVSValue::typeid;
 		//ctorParams[1] = SAPStudio::AvsFilterNet::ScriptEnvironment::typeid;
-		for (int i = 0; i < attrs->Length; i++)
-		{
-			try
-			{
+		for (int i = 0; i < attrs->Length; i++) {
+			try {
 				AvisynthFilterClassAttribute^ attr = (AvisynthFilterClassAttribute^)attrs[i];
 				//validate the plugin
 				//must inherit from AvisynthFilter
@@ -85,25 +76,22 @@ void LoadNetPluginImpl(String^ path, IScriptEnvironment* env, bool throwErr) {
 				void* handle;
 				//Marshal::StructureToPtr(attr->FilterType->TypeHandle,IntPtr((void*)&typeHandle),false);
 				handle = GCHandle::ToIntPtr(GCHandle::Alloc(attr->FilterType)).ToPointer();
-				char *name, *params;
-				name = (char *)Marshal::StringToHGlobalAnsi(attr->FilterName).ToPointer();
-				params = (char *)Marshal::StringToHGlobalAnsi(attr->Arguments).ToPointer();
-				env->AddFunction(name, params, Create_NetPlugin, handle);
+				NativeString^ name = gcnew NativeString(attr->FilterName);
+				NativeString^ params = gcnew NativeString(attr->Arguments);
+				env->AddFunction(name->GetPointer(), params->GetPointer(), Create_NetPlugin, handle);
 				if (attr->MultiThreadingMode != SAPStudio::AvsFilterNet::MtMode::UNKNOWN && env->FunctionExists("SetFilterMTMode")) {
 					auto env2 = static_cast<IScriptEnvironment2*>(env);
-					env2->SetFilterMTMode(name, (NativeMtMode)attr->MultiThreadingMode, true);
+					env2->SetFilterMTMode(name->GetPointer(), (NativeMtMode)attr->MultiThreadingMode, true);
 				}
-				Marshal::FreeHGlobal(IntPtr(name));
-				Marshal::FreeHGlobal(IntPtr(params));
+				delete name;
+				delete params;
 			}
-			catch (Exception^)
-			{
+			catch (Exception^) {
 				//just ignore
 			}
 		}
 	}
-	catch (Exception ^)
-	{
+	catch (Exception ^) {
 		if (throwErr) env->ThrowError("Unable to load plugin, make sure it is a valid .Net assembly");
 	}
 }
@@ -114,8 +102,7 @@ NativeAVSValue __cdecl LoadNetPlugin(NativeAVSValue args, void* user_data, IScri
 	// Calls the constructor with the arguments provied.
 }
 
-Assembly^ ResolveAssembly(Object^ sender, ResolveEventArgs^ args)
-{
+Assembly^ ResolveAssembly(Object^ sender, ResolveEventArgs^ args) {
 	Assembly^ assm = Assembly::GetExecutingAssembly();
 	if (args->Name->StartsWith(assm->GetName()->Name + ",")) {
 		return assm;
@@ -125,8 +112,7 @@ Assembly^ ResolveAssembly(Object^ sender, ResolveEventArgs^ args)
 
 void AutoLoadPlugins(IScriptEnvironment* env) {
 	array<String^> ^ fileNames = Directory::GetFiles(Path::GetDirectoryName(Assembly::GetExecutingAssembly()->Location), "*_netautoload*.dll");
-	for (int i = 0; i < fileNames->Length; i++)
-	{
+	for (int i = 0; i < fileNames->Length; i++) {
 		LoadNetPluginImpl(fileNames[i], env, false);
 	}
 }
@@ -145,7 +131,6 @@ extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit3(IScri
 	// f - Float number
 	// s - String
 	// b - boolean
-	//env->AddFunction("TestNet","c",Create_TestPlugin,0);
 	AppDomain::CurrentDomain->AssemblyResolve += gcnew ResolveEventHandler(ResolveAssembly);
 	env->AddFunction("LoadNetPlugin", "s", LoadNetPlugin, 0);
 	AutoLoadPlugins(env);

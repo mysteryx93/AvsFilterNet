@@ -4,11 +4,11 @@ using namespace System;
 
 namespace SAPStudio {
     namespace AvsFilterNet {
-
         ScriptEnvironment2::ScriptEnvironment2(IScriptEnvironment2 *env) {
             _env = env;
         };
-        IScriptEnvironment2 * ScriptEnvironment2::GetNative() {
+
+		IScriptEnvironment2* ScriptEnvironment2::GetNative() {
             return _env;
         }
 
@@ -110,8 +110,7 @@ namespace SAPStudio {
             if (arg_names&&arg_names->Length>0) {
                 n_arg_names = gcnew List<NativeString^>(arg_names->Length);
                 p_arg_names = (const char**)malloc(sizeof(char*)*arg_names->Length);
-                for (int i = 0; i < arg_names->Length; i++)
-                {
+                for (int i = 0; i < arg_names->Length; i++) {
                     if (String::IsNullOrEmpty(arg_names[i])) {
                         p_arg_names[i] = NULL;
                         continue;
@@ -121,16 +120,13 @@ namespace SAPStudio {
                     n_arg_names->Add(str);
                 }
             }
-            try
-            {
+            try {
                 return _env->Invoke(&result->GetNative(), nname->GetPointer(), args->GetNative(), p_arg_names);
             }
-            catch (AvisynthError err)
-            {
+            catch (AvisynthError err) {
                 throw gcnew AvisynthException(Marshal::PtrToStringAnsi(IntPtr((void*)err.msg)));
             }
-            finally
-            {
+            finally {
                 delete nname;
                 if (p_arg_names) {
                     free(p_arg_names);
@@ -144,23 +140,19 @@ namespace SAPStudio {
         }
 
         IntPtr ScriptEnvironment2::Allocate(size_t nBytes, size_t alignment, AvsAllocType type) {
-            try
-            {
+            try {
                 return (IntPtr)_env->Allocate(nBytes, alignment, type);
             }
-            catch (AvisynthError err)
-            {
+            catch (AvisynthError err) {
                 throw gcnew AvisynthException(Marshal::PtrToStringAnsi(IntPtr((void*)err.msg)));
             }
         }
 
         void ScriptEnvironment2::Free(IntPtr ptr) {
-            try
-            {
+            try {
                 _env->Free((void*)ptr);
             }
-            catch (AvisynthError err)
-            {
+            catch (AvisynthError err) {
                 throw gcnew AvisynthException(Marshal::PtrToStringAnsi(IntPtr((void*)err.msg)));
             }
         }
