@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Media.Imaging;
-using SAPStudio.AvsFilterNet;
+using AvsFilterNet;
 
-[assembly: AvisynthFilterClass(typeof(SAPStudio.SimpleSampleNet.LoadImageNet), "LoadImageNet", "c[path]s", MtMode.NICE_FILTER)]
-namespace SAPStudio.SimpleSampleNet {
+[assembly: AvisynthFilterClass(typeof(SimpleSampleNet.LoadImageNet), "LoadImageNet", "c[path]s", MtMode.NICE_FILTER)]
+namespace SimpleSampleNet {
     public class LoadImageNet : AvisynthFilter {
         VideoInfo vi;
         MemoryStream imageStream;

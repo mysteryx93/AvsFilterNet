@@ -6,24 +6,24 @@ using namespace System::Reflection;
 using namespace System;
 
 NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScriptEnvironment *env) {
-	using namespace SAPStudio::AvsFilterNet;
+	using namespace AvsFilterNet;
 	Type ^ filterType = (Type ^)GCHandle::FromIntPtr(IntPtr(user_data)).Target;
 	AVSValueCollector^ col = gcnew AVSValueCollector;
 	try {
 		// Calls the constructor with the arguments provied.
-		SAPStudio::AvsFilterNet::ScriptEnvironment^ envM = gcnew SAPStudio::AvsFilterNet::ScriptEnvironment(env);
+		AvsFilterNet::ScriptEnvironment^ envM = gcnew AvsFilterNet::ScriptEnvironment(env);
 		AvisynthFilter^ Filter = ((AvisynthFilter^)Activator::CreateInstance(filterType));
 		if (args[0].IsClip())
 			Filter->SetChild(gcnew Clip(args[0].AsClip()));
 		// If Initialize returns a value, we'll return that value and skip this class.
-		SAPStudio::AvsFilterNet::AVSValue^ CancelLoad = Filter->Initialize(gcnew SAPStudio::AvsFilterNet::AVSValue(args), envM);
+		AvsFilterNet::AVSValue^ CancelLoad = Filter->Initialize(gcnew AvsFilterNet::AVSValue(args), envM);
 		if (CancelLoad) {
 			Filter->SetChild(nullptr);
 			return CancelLoad->GetNative();
 		}
 		else {
 			// If we're using this class, Finalize will be called at the end.
-			SAPStudio::AvsFilterNet::AVSValue^ V = gcnew SAPStudio::AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
+			AvsFilterNet::AVSValue^ V = gcnew AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
 			return Filter->Finalize(V, envM)->GetNative();
 		}
 	}
@@ -54,13 +54,13 @@ NativeAVSValue __cdecl Create_NetPlugin(NativeAVSValue args, void* user_data, IS
 
 
 void LoadNetPluginImpl(String^ path, IScriptEnvironment* env, bool throwErr) {
-	using namespace SAPStudio::AvsFilterNet;
+	using namespace AvsFilterNet;
 	try {
 		Assembly^ assm = Assembly::LoadFrom(path);
 		array<Object^> ^ attrs = assm->GetCustomAttributes(AvisynthFilterClassAttribute::typeid, true);
 		array<Type^> ^ ctorParams = gcnew array<Type^>(0);
-		//ctorParams[0] = SAPStudio::AvsFilterNet::AVSValue::typeid;
-		//ctorParams[1] = SAPStudio::AvsFilterNet::ScriptEnvironment::typeid;
+		//ctorParams[0] = AvsFilterNet::AVSValue::typeid;
+		//ctorParams[1] = AvsFilterNet::ScriptEnvironment::typeid;
 		for (int i = 0; i < attrs->Length; i++) {
 			try {
 				AvisynthFilterClassAttribute^ attr = (AvisynthFilterClassAttribute^)attrs[i];
@@ -79,7 +79,7 @@ void LoadNetPluginImpl(String^ path, IScriptEnvironment* env, bool throwErr) {
 				NativeString^ name = gcnew NativeString(attr->FilterName);
 				NativeString^ params = gcnew NativeString(attr->Arguments);
 				env->AddFunction(name->GetPointer(), params->GetPointer(), Create_NetPlugin, handle);
-				if (attr->MultiThreadingMode != SAPStudio::AvsFilterNet::MtMode::UNKNOWN && env->FunctionExists("SetFilterMTMode")) {
+				if (attr->MultiThreadingMode != AvsFilterNet::MtMode::UNKNOWN && env->FunctionExists("SetFilterMTMode")) {
 					auto env2 = static_cast<IScriptEnvironment2*>(env);
 					env2->SetFilterMTMode(name->GetPointer(), (NativeMtMode)attr->MultiThreadingMode, true);
 				}

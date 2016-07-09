@@ -2,20 +2,14 @@
 
 using namespace System;
 
-namespace SAPStudio {
-	namespace AvsFilterNet {
+namespace AvsFilterNet {
+	public ref class AvisynthException :
+		public ApplicationException {
+	public:
+		AvisynthException(String^ message) : ApplicationException(message) {
+		}
 
-		public ref class AvisynthException :
-			public ApplicationException
-			{
-			public:
-
-				AvisynthException(String^ message) : ApplicationException(message)
-				{
-				}
-				AvisynthException() : ApplicationException("Avisynth error.")
-				{
-				}
-			};
-	}
+		AvisynthException() : ApplicationException("Avisynth error.") {
+		}
+	};
 }

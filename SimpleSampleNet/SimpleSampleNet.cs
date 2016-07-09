@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using SAPStudio.AvsFilterNet;
+using AvsFilterNet;
 
 
 // The following attribute is used by the loader to find your plugin class.
