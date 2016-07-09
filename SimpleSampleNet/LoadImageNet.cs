@@ -10,9 +10,6 @@ namespace SimpleSampleNet {
         MemoryStream imageStream;
         int imagePitch;
 
-        public LoadImageNet():base() {
-        }
-
         public override AVSValue Initialize(AVSValue args, ScriptEnvironment env) {
             string path = args[0].AsString();
             BitmapImage BitmapFile = new BitmapImage(new Uri(path));
