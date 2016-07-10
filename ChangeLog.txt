@@ -1,3 +1,7 @@
+v1.0.2:
+- Fixed ExecuteBefore
+
+
 v1.0.1: July 10th 2016
 - Tested multi-threading and error handling. Both are working fine.
 - Renamed the new Finalize function to ExecuteAfter.
