@@ -1,0 +1,30 @@
+v1.0.1: July 10th 2016
+- Tested multi-threading and error handling. Both are working fine.
+- Renamed the new Finalize function to ExecuteAfter.
+- Added ExecuteBefore function with CancelLoad parameter.
+- If CancelLoad is specified during ExecuteBefore, the filter will be discarded and other filters can be executed instead.
+- env.Invoke can now take null as arguments parameters.
+- Added generation of intellisense documentation.
+- Fixed env2.GetProperty by adding managed enumeration.
+- Added InterProcessNet sample which performs a frame operation in a different process.
+
+Known issues:
+- ExecuteBefore result will be ignored; calling SetChild with its result causes an infinite loop with SetCacheHints
+- LoadPluginNet must point to a path known to the assembly (same folder) or it may not recognize the DLL
+
+
+v1.0: July 9th 2016
+- Transfered the code to GitHub
+- Ported old code to Visual Studio 2015
+- Replaced AviSynth.h headers with the one from AviSynth+
+- Adapted the code for the new headers
+- Env was being stored by the filter class (bad), removed that
+- Removed GenericVideoFilter base class of AvisynthFilter and made sure it doesn't crash when first parameter isn't a clip
+- Removed SAPStudio namespace
+- Cleaned up formatting and removed a lot of commented code
+- Added support for AviSynth+'s env2
+- Added auto-registration of MT mode via the class attibute
+- Added LoadImageNet sample
+- Removed the constructor parameters and added them to Initialize
+- Added functions to allow executing other filters before and after
+- Added env.bitblt overloads to support C# byte[]

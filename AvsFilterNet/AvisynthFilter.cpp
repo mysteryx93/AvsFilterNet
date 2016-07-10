@@ -14,12 +14,15 @@ namespace AvsFilterNet {
 		}
 	}
 
-	AVSValue^ AvisynthFilter::Initialize(AVSValue^ args, ScriptEnvironment^ env) {
-		return args;
+	void AvisynthFilter::Initialize(AVSValue^ args, ScriptEnvironment^ env) {
 	}
 
-	AVSValue^ AvisynthFilter::Finalize(AVSValue^ clip, ScriptEnvironment^ env) {
-		return clip;
+	AVSValue^ AvisynthFilter::ExecuteBefore(AVSValue^ args, bool% cancelLoad, ScriptEnvironment^ env) {
+		return gcnew AVSValue(args[0]->AsClip());
+	}
+
+	AVSValue^ AvisynthFilter::ExecuteAfter(AVSValue^ clip, ScriptEnvironment^ env) {
+		return gcnew AVSValue(clip->AsClip());
 	}
 
 	Clip^ AvisynthFilter::Child::get() {
@@ -62,6 +65,7 @@ namespace AvsFilterNet {
 		else {
 			_stub = new AvisynthFilterNativeStub(this);
 		}
+		_initialized = false;
 	}
 
 	VideoFrame^ AvisynthFilter::NewVideoFrame(ScriptEnvironment^ env) {

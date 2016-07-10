@@ -23,17 +23,21 @@ namespace AvsFilterNet {
 		/// <remarks>This method can only be called during filter initialization, otherwise an exception will be thrown. Additionally, don't call <see cref="SetChild"/> after new video info is set as it will be overwritten.</remarks>
 		void SetVideoInfo(VideoInfo% vi);
 
-		/// <summary>Called when the class is being created. Use this function instead of overriding the constructor.</summary>
+		/// <summary>Called when the class is being initialized. Use this function instead of overriding the constructor.</summary>
 		/// <param name='args'>The AviSynth arguments of the plugin.</param>
 		/// <param name='env'>Script environment object.</param>
-		/// <returns>A <see cref="AVSValue"/>. Return null (or Nothing in Visual Basic) to proceed with the execution of the plugin. 
-		/// If not null, such as when instead calling other filters, this instance will be ignored and disposed, and the returned <see cref="AVSValue"> will be used instead.</returns>
-		virtual AVSValue^ Initialize(AVSValue^ args, ScriptEnvironment^ env);
-		/// <summary>Called at the end of the filter creation and allows executing additional post-processing plugins.</param>
+		virtual void Initialize(AVSValue^ args, ScriptEnvironment^ env);
+		/// <summary>Called before the filter creation and allows executing pre-processing filters.</summary>
+		/// <param name='clip'>The source clip of this filter.</param>
+		/// <param name='cancelLoad'>If set to true, this plugin will not be executed. Useful if you're instead executing other plugins.</param>
+		/// <param name='env'>Script environment object.</param>
+		/// <returns>A <see cref="AVSValue"/>A <see cref="AVSValue"/>. The plugin chain to return to AviSynth for processing.</returns>
+		virtual AVSValue^ ExecuteBefore(AVSValue^ clip, bool% cancelLoad, ScriptEnvironment^ env);
+		/// <summary>Called at the end of the filter creation and allows executing additional post-processing plugins.</summary>
 		/// <param name='clip'>The output clip of this plugin.</param>
 		/// <param name='env'>Script environment object.</param>
 		/// <returns>A <see cref="AVSValue"/>A <see cref="AVSValue"/>. The plugin chain to return to AviSynth for processing.</returns>
-		virtual AVSValue^ Finalize(AVSValue^ clip, ScriptEnvironment^ env);
+		virtual AVSValue^ ExecuteAfter(AVSValue^ clip, ScriptEnvironment^ env);
 
 		/// <summary>Called when the specified frame is requested.</summary>
 		/// <param name='n'>Requested frame number.</param>
@@ -50,7 +54,6 @@ namespace AvsFilterNet {
 		VideoFrame^ NewVideoFrame(ScriptEnvironment^ env);
 		/// <summary>Creates a new <see cref="VideoFrame"/> using <see cref="VideoFrame"/> of the filter itself, with specified frame align.</summary>
 		VideoFrame^ NewVideoFrame(int align, ScriptEnvironment^ env);
-
 	internal:
 		PVideoFrame GetFrame(int n, IScriptEnvironment* env);
 

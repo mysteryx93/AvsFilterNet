@@ -70,10 +70,24 @@ namespace AvsFilterNet {
 		CPUF_SSE3 = 0x100,   //  PIV+, Hammer
 	};
 
+	/// <summary>The multi-threading mode for AviSynth+.</summary>
 	public enum class MtMode {
+		/// <summary>MT mode won't be configured.</summary>
 		UNKNOWN = 0,
+		/// <summary>A single instance of the filter will be created and GetFrame will be called in parallel from various threads.</summary>
 		NICE_FILTER = 1,
+		/// <summary>An instance of the filter will be created for each thread and each instance will receive a single GetFrame request at once.</summary>
 		MULTI_INSTANCE = 2,
+		/// <summary>A single instance of the filter will be created and it will receive a single GetFrame request at once. Useful for source filters.</summary>
 		SERIALIZED = 3,
+	};
+
+	public enum class AvisynthProperty {
+		PHYSICAL_CPUS = 1,
+		LOGICAL_CPUS = 2,
+		THREADPOOL_THREADS = 3,
+		FILTERCHAIN_THREADS = 4,
+		THREAD_ID = 5,
+		VERSION = 6
 	};
 }

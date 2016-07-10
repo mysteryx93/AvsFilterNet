@@ -97,10 +97,12 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InterProcessNet.cs" />
     <Compile Include="LoadImageNet.cs" />
     <Compile Include="SimpleSampleNet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,6 +128,10 @@
     <ProjectReference Include="..\avsfilternet\AvsFilterNet.vcxproj">
       <Project>{6679C5BF-BD2A-454F-9A97-719A00CD5BE0}</Project>
       <Name>AvsFilterNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InterProcessSample\InterProcessSample.csproj">
+      <Project>{9ba8b3f5-c43a-4da8-a4b7-d10aa5eec54d}</Project>
+      <Name>InterProcessSample</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

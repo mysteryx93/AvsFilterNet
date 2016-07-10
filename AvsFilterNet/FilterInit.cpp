@@ -16,15 +16,20 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 		if (args[0].IsClip())
 			Filter->SetChild(gcnew Clip(args[0].AsClip()));
 		// If Initialize returns a value, we'll return that value and skip this class.
-		AvsFilterNet::AVSValue^ CancelLoad = Filter->Initialize(gcnew AvsFilterNet::AVSValue(args), envM);
+		bool CancelLoad = false;
+		AvsFilterNet::AVSValue^ V = gcnew AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
+		V = Filter->ExecuteBefore(V, CancelLoad, envM);
 		if (CancelLoad) {
 			Filter->SetChild(nullptr);
-			return CancelLoad->GetNative();
+			return V->GetNative();
 		}
 		else {
+			// Filter->SetChild(V->AsClip());  ## BUG: causes an infinite loop with SetCacheHints!!
+			Filter->Initialize(gcnew AvsFilterNet::AVSValue(args), envM);
+			Filter->InitComplete();
 			// If we're using this class, Finalize will be called at the end.
-			AvsFilterNet::AVSValue^ V = gcnew AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
-			return Filter->Finalize(V, envM)->GetNative();
+			V = gcnew AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
+			return Filter->ExecuteAfter(V, envM)->GetNative();
 		}
 	}
 	catch (AvisynthError err) {

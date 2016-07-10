@@ -11,8 +11,8 @@ namespace AvsFilterNet {
 		return _env;
 	}
 
-	size_t ScriptEnvironment2::GetProperty(AvsEnvProperty prop) {
-		return _env->GetProperty(prop);
+	size_t ScriptEnvironment2::GetProperty(AvisynthProperty prop) {
+		return _env->GetProperty((AvsEnvProperty)prop);
 	}
 
 	bool ScriptEnvironment2::GetVar(String^ name, AVSValue^ val) {
@@ -120,7 +120,7 @@ namespace AvsFilterNet {
 			}
 		}
 		try {
-			return _env->Invoke(&result->GetNative(), nname->GetPointer(), args->GetNative(), p_arg_names);
+			return _env->Invoke(&result->GetNative(), nname->GetPointer(), args ? args->GetNative() : NativeAVSValue(), p_arg_names);
 		}
 		catch (AvisynthError err) {
 			throw gcnew AvisynthException(Marshal::PtrToStringAnsi(IntPtr((void*)err.msg)));

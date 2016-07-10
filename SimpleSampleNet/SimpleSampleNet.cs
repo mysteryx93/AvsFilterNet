@@ -60,19 +60,16 @@ namespace SAPStudio.SimpleSampleNet {
         public SimpleSampleNet() : base() {
             // This is the constructor. It does not return any value, and is always used, 
             //  when an instance of the class is created.
-
-            //The signature of constructor must be (AVSValue args, ScriptEnvironment env),
-            //otherwise the loader won't recognize your plugin.
-
-            //Save the parameter for future use.
-            //Remember index 0 is the child clip saved in base class.
+            // Use Initialize and Dispose instead of the constructor and destructor.
+            // The base class must handle the constructor and destructor on its own.
         }
 
-        public override AVSValue Initialize(AVSValue args, ScriptEnvironment env) {
+        public override void Initialize(AVSValue args, ScriptEnvironment env) {
+            //Save the parameter for future use.
+            //Remember index 0 is the child clip saved in base class.
             WindowVideo = args[1].AsClip();
             SquareSize = args[2].AsInt(0);
             vi = GetVideoInfo();
-            return null;
         }
 
         protected override void Dispose(bool disposing) {

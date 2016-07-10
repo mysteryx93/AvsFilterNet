@@ -21,7 +21,7 @@ namespace AvsFilterNet {
 	public:
 
 		// Generic system to ask for various properties
-		size_t GetProperty(AvsEnvProperty prop);
+		size_t GetProperty(AvisynthProperty prop);
 
 		// Returns TRUE and the requested variable. If the method fails, returns FALSE and does not touch 'val'.
 		bool GetVar(String^ name, AVSValue^ val);

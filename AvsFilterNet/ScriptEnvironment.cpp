@@ -75,7 +75,7 @@ namespace AvsFilterNet {
 			}
 		}
 		try {
-			NativeAVSValue ret = NativeAVSValue(_env->Invoke(nname->GetPointer(), (args->GetNative()), p_arg_names));
+			NativeAVSValue ret = NativeAVSValue(_env->Invoke(nname->GetPointer(), args ? args->GetNative() : NativeAVSValue(), p_arg_names));
 			AVSValue^ retwrap = gcnew AVSValue(ret);
 			return retwrap;
 		}
