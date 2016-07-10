@@ -18,25 +18,21 @@ namespace AvsFilterNet {
 	PVideoFrame __stdcall AvisynthFilterNativeStub::GetFrame(int n, IScriptEnvironment* env) {
 		PVideoFrame ret;
 		char * errMsg = NULL;
-		try
-		{
+		try {
 			ret = _impl->GetFrame(n, env);
 		}
-		catch (AvisynthError err)
-		{
+		catch (AvisynthError err) {
 			// To prevent problems, we always duplicate error messages
 			errMsg = (_strdup(err.msg));
 		}
 		catch (AvisynthException^ ex) {
 			errMsg = ((char *)Marshal::StringToHGlobalAnsi(ex->Message).ToPointer());
 		}
-		catch (SEHException^ ex)
-		{
+		catch (SEHException^ ex) {
 			(void)ex;
 			errMsg = ("SEHException");
 		}
-		catch (Exception^ ex)
-		{
+		catch (Exception^ ex) {
 			errMsg = ((char *)Marshal::StringToHGlobalAnsi(_impl->GetType()->Name + ": " + ex->ToString()).ToPointer());
 		}
 		if (errMsg) env->ThrowError(errMsg);
@@ -45,8 +41,7 @@ namespace AvsFilterNet {
 	}
 
 	void __stdcall AvisynthFilterNativeStub::GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env) {
-		try
-		{
+		try {
 			_impl->GetAudio(buf, start, count, env);
 		}
 		catch (AvisynthError err) {
@@ -56,12 +51,10 @@ namespace AvsFilterNet {
 		catch (AvisynthException^ ex) {
 			env->ThrowError((char *)Marshal::StringToHGlobalAnsi(ex->Message).ToPointer());
 		}
-		catch (Exception^ ex)
-		{
+		catch (Exception^ ex) {
 			env->ThrowError((char *)Marshal::StringToHGlobalAnsi(_impl->GetType()->Name + ": " + ex->ToString()).ToPointer());
 		}
-		catch (...)
-		{
+		catch (...) {
 			env->ThrowError("An unknown error while getting audio samples.");
 		}
 	}

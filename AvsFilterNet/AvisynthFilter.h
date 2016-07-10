@@ -32,7 +32,7 @@ namespace AvsFilterNet {
 		/// <param name='cancelLoad'>If set to true, this plugin will not be executed. Useful if you're instead executing other plugins.</param>
 		/// <param name='env'>Script environment object.</param>
 		/// <returns>A <see cref="AVSValue"/>A <see cref="AVSValue"/>. The plugin chain to return to AviSynth for processing.</returns>
-		virtual AVSValue^ ExecuteBefore(AVSValue^ clip, bool% cancelLoad, ScriptEnvironment^ env);
+		virtual AVSValue^ ExecuteBefore(AVSValue^ args, bool% cancelLoad, ScriptEnvironment^ env);
 		/// <summary>Called at the end of the filter creation and allows executing additional post-processing plugins.</summary>
 		/// <param name='clip'>The output clip of this plugin.</param>
 		/// <param name='env'>Script environment object.</param>
@@ -56,11 +56,8 @@ namespace AvsFilterNet {
 		VideoFrame^ NewVideoFrame(int align, ScriptEnvironment^ env);
 	internal:
 		PVideoFrame GetFrame(int n, IScriptEnvironment* env);
-
 		void GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env);
-
 		void InitComplete();
-
 		AvisynthFilterNativeStub* GetNativeStub();
 	};
 };

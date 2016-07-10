@@ -5,5 +5,5 @@ LoadNetPlugin("C:\GitHub\AvsFilterNet\SimpleSampleNet\bin\x86\Debug\SimpleSample
 ColorBarsHD(600, 500)
 #SetFilterMTMode("LoadImageNet", 2, true)
 #LoadImageNet("F:\AVSMeter\TestImage\Lighthouse.png")
-InterProcessNet()
+InterProcessNet("abc")
 #Prefetch(4)

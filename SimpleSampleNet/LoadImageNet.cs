@@ -29,11 +29,16 @@ namespace SimpleSampleNet {
             imageStream = new MemoryStream(BitmapData, 0, vi.height * imagePitch, false, true);
         }
 
+        public override AVSValue ExecuteBefore(AVSValue clip, ref bool cancelLoad, ScriptEnvironment env) {
+            return env.Invoke("FlipVertical", new AVSValue(clip));
+        }
+
         public override AVSValue ExecuteAfter(AVSValue clip, ScriptEnvironment env) {
             return env.Invoke("FlipVertical", new AVSValue(clip));
         }
 
         public override VideoFrame GetFrame(int n, ScriptEnvironment env) {
+            return Child.GetFrame(n, env);
             lock (imageStream) {
                 VideoFrame dst = NewVideoFrame(env);
                 env.BitBlt(dst.GetWritePtr(), dst.GetPitch(), imageStream.GetBuffer(), imagePitch, vi.width * 4, vi.height);

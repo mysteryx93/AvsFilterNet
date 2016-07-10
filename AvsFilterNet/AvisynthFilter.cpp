@@ -65,7 +65,6 @@ namespace AvsFilterNet {
 		else {
 			_stub = new AvisynthFilterNativeStub(this);
 		}
-		_initialized = false;
 	}
 
 	VideoFrame^ AvisynthFilter::NewVideoFrame(ScriptEnvironment^ env) {

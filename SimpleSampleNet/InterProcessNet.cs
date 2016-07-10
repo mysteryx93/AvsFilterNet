@@ -15,13 +15,18 @@ namespace SimpleSampleNet {
 
         public override void Initialize(AVSValue args, ScriptEnvironment env) {
             vi = GetVideoInfo();
-            server = Process.Start(GetServerPath());
+            string AppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string ServerExePath = Path.Combine(AppPath, "InterProcessSample.exe");
+            server = Process.Start(ServerExePath);
         }
 
-        private string GetServerPath() {
-            string AppPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            return Path.Combine(AppPath, "InterProcessSample.exe");
-        }
+        //public override AVSValue ExecuteBefore(AVSValue args, ref bool cancelLoad, ScriptEnvironment env) {
+        //    return env.Invoke("FlipHorizontal", new AVSValue(args[0].AsClip()));
+        //}
+
+        //public override AVSValue ExecuteAfter(AVSValue clip, ScriptEnvironment env) {
+        //    return env.Invoke("FlipVertical", new AVSValue(clip));
+        //}
 
         protected override void Dispose(bool disposing) {
             if (!server.HasExited)
