@@ -5,10 +5,12 @@ namespace AvsFilterNet {
 	VideoFrame::VideoFrame(PNativeVideoFrame frame) {
 		_pframe = new PNativeVideoFrame(frame);
 		_frame = (NativeVideoFrame*)(void*)*_pframe;
+		VideoFrameCollector::OnVideoFrameCreate(this);
 	}
 
 	VideoFrame::~VideoFrame() {
 		CleanUp();
+		VideoFrameCollector::OnVideoFrameDispose(this);
 	}
 
 	VideoFrame::!VideoFrame() {
@@ -19,6 +21,11 @@ namespace AvsFilterNet {
 #if DEBUG
 		System::Diagnostics::Debug::WriteLine("VideoFrame::!VideoFrame end");
 #endif
+	}
+
+	void VideoFrame::CollectorDispose() {
+		CleanUp();
+		GC::SuppressFinalize(this);
 	}
 
 	void VideoFrame::CleanUp()

@@ -18,6 +18,7 @@ namespace AvsFilterNet {
 		VideoFrame(PNativeVideoFrame frame);
 		~VideoFrame();
 
+		void CollectorDispose();
 		PNativeVideoFrame GetNative();
 		bool MakeWritable(IScriptEnvironment *env);
 	protected:

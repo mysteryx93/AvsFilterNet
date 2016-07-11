@@ -44,18 +44,10 @@ namespace SimpleSampleNet {
             Stream[] Planes = new Stream[] { Src.GetReadStream(YUVPlanes.PLANAR_Y), Src.GetReadStream(YUVPlanes.PLANAR_U), Src.GetReadStream(YUVPlanes.PLANAR_V) };
             byte[][] Result = channel.Add(new RequestParameters(n, Planes));
             VideoFrame Dst = NewVideoFrame(env);
-            try {
-                throw new Exception("BOOM!");
-                env.BitBlt(Dst.GetWritePtr(YUVPlanes.PLANAR_Y), Dst.GetPitch(YUVPlanes.PLANAR_Y), Result[0], Src.GetPitch(YUVPlanes.PLANAR_Y), Src.GetRowSize(YUVPlanes.PLANAR_Y), Src.GetHeight(YUVPlanes.PLANAR_Y));
-                env.BitBlt(Dst.GetWritePtr(YUVPlanes.PLANAR_U), Dst.GetPitch(YUVPlanes.PLANAR_U), Result[1], Src.GetPitch(YUVPlanes.PLANAR_U), Src.GetRowSize(YUVPlanes.PLANAR_U), Src.GetHeight(YUVPlanes.PLANAR_U));
-                env.BitBlt(Dst.GetWritePtr(YUVPlanes.PLANAR_V), Dst.GetPitch(YUVPlanes.PLANAR_V), Result[2], Src.GetPitch(YUVPlanes.PLANAR_V), Src.GetRowSize(YUVPlanes.PLANAR_V), Src.GetHeight(YUVPlanes.PLANAR_V));
-            } catch (Exception ex) {
-                Dst.Dispose();
-                throw ex;
-            } finally {
-                Src.Dispose();
-            }
-            // Src.Dispose(); // Why is this line necessary?
+            throw new Exception("BOOM!");
+            env.BitBlt(Dst.GetWritePtr(YUVPlanes.PLANAR_Y), Dst.GetPitch(YUVPlanes.PLANAR_Y), Result[0], Src.GetPitch(YUVPlanes.PLANAR_Y), Src.GetRowSize(YUVPlanes.PLANAR_Y), Src.GetHeight(YUVPlanes.PLANAR_Y));
+            env.BitBlt(Dst.GetWritePtr(YUVPlanes.PLANAR_U), Dst.GetPitch(YUVPlanes.PLANAR_U), Result[1], Src.GetPitch(YUVPlanes.PLANAR_U), Src.GetRowSize(YUVPlanes.PLANAR_U), Src.GetHeight(YUVPlanes.PLANAR_U));
+            env.BitBlt(Dst.GetWritePtr(YUVPlanes.PLANAR_V), Dst.GetPitch(YUVPlanes.PLANAR_V), Result[2], Src.GetPitch(YUVPlanes.PLANAR_V), Src.GetRowSize(YUVPlanes.PLANAR_V), Src.GetHeight(YUVPlanes.PLANAR_V));
             return Dst;
         }
     }

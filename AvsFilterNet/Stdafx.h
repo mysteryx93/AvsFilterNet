@@ -20,6 +20,7 @@ typedef MtMode NativeMtMode;
 #include "ScriptEnvironment2.h"
 #include "ScriptEnvironment.h"
 #include "AVSValueCollector.h"
+#include "VideoFrameCollector.h"
 #include "AvisynthFilter.h"
 #include "AvisynthFilterNativeStub.h"
 #include "AvisynthFilterClassAttribute.h"

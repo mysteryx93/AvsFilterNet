@@ -1,5 +1,6 @@
-v1.0.2:
+v1.0.2: July 11th 2016
 - Fixed ExecuteBefore
+- Fixed VideoFrame not being properly released
 
 
 v1.0.1: July 10th 2016

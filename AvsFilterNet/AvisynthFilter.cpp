@@ -76,7 +76,9 @@ namespace AvsFilterNet {
 	}
 
 	PVideoFrame AvisynthFilter::GetFrame(int n, IScriptEnvironment* env) {
+		VideoFrameCollector Collector; // This will release all VideoFrame created within GetFrame.
 		VideoFrame^ ret = GetFrame(n, gcnew ScriptEnvironment(env));
+		VideoFrameCollector::OnVideoFrameDispose(ret);
 		if (ret) {
 			PVideoFrame pvf = ret->GetNative();
 			delete ret;

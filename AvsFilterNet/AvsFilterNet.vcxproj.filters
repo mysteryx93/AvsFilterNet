@@ -54,6 +54,9 @@
     <ClCompile Include="ScriptEnvironment2.cpp">
       <Filter>CPP</Filter>
     </ClCompile>
+    <ClCompile Include="VideoFrameCollector.cpp">
+      <Filter>CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avisynth.h">
@@ -111,6 +114,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ScriptEnvironment2.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoFrameCollector.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
