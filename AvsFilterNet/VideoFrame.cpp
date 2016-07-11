@@ -24,8 +24,7 @@ namespace AvsFilterNet {
 	void VideoFrame::CleanUp()
 	{
 		_frame = NULL;
-		if (_pframe)
-			delete _pframe;
+		delete _pframe;
 		_pframe = NULL;
 	}
 
