@@ -78,13 +78,7 @@ namespace AvsFilterNet {
 	PVideoFrame AvisynthFilter::GetFrame(int n, IScriptEnvironment* env) {
 		VideoFrameCollector Collector; // This will release all VideoFrame created within GetFrame.
 		VideoFrame^ ret = GetFrame(n, gcnew ScriptEnvironment(env));
-		VideoFrameCollector::OnVideoFrameDispose(ret);
-		if (ret) {
-			PVideoFrame pvf = ret->GetNative();
-			delete ret;
-			return pvf;
-		}
-		return NULL;
+		return ret ? ret->GetNative() : NULL;
 	}
 
 	void AvisynthFilter::GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env) {
