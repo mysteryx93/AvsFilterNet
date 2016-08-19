@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using AvsFilterNet;
 
@@ -77,29 +79,32 @@ namespace Business {
         // \   / \   / \   / \
         //   M     M     M     M
         unsafe private void Step2(byte* dst, int dstPitch) {
-            byte[] Val = new byte[4];
+            List<byte> Val = new List<byte>();
             int CalcHeight = vi.height - 2;
             int CalcWidth = vi.width - 2;
             for (int y = 0; y < CalcHeight; y += 2) {
                 for (int x = 0; x < CalcWidth; x += 2) {
-                    Val[0] = dst[x];
-                    Val[1] = dst[x + 2];
-                    Val[2] = dst[dstPitch * 2 + x];
-                    Val[3] = dst[dstPitch * 2 + x + 2];
-                    dst[dstPitch + x + 1] = (byte)(((int)Val[0] + Val[1] + Val[2] + Val[3]) / 4);
+                    Val.Clear();
+                    Val.Add(dst[x]);
+                    Val.Add(dst[x + 2]);
+                    Val.Add(dst[dstPitch * 2 + x]);
+                    Val.Add(dst[dstPitch * 2 + x + 2]);
+                    dst[dstPitch + x + 1] = GetMedian(Val);
                 }
                 // Last column is average of 2
-                Val[0] = dst[vi.width - 2];
-                Val[1] = dst[dstPitch * 2 + vi.width - 2];
-                dst[dstPitch + vi.width - 1] = (byte)(((int)Val[0] + Val[1]) / 2);
+                Val.Clear();
+                Val.Add(dst[vi.width - 2]);
+                Val.Add(dst[dstPitch * 2 + vi.width - 2]);
+                dst[dstPitch + vi.width - 1] = GetMedian(Val);
 
                 dst += dstPitch * 2;
             }
             // Last row is average of 2
             for (int x = 0; x < CalcWidth; x += 2) {
-                Val[0] = dst[x];
-                Val[1] = dst[x + 2];
-                dst[dstPitch + x + 1] = (byte)(((int)Val[0] + Val[1]) / 2);
+                Val.Clear();
+                Val.Add(dst[x]);
+                Val.Add(dst[x + 2]);
+                dst[dstPitch + x + 1] = GetMedian(Val);
             }
             // Lower-right corner has 1 neighbor value
             dst[dstPitch + vi.width - 1] = dst[vi.width - 2];
@@ -120,7 +125,7 @@ namespace Business {
         //S -> o <- S -> o <- S
         //v    ^    v    ^    v
         unsafe private void Step3(byte* dst, int dstPitch) {
-            byte[] Val = new byte[4];
+            List<byte> Val = new List<byte>();
             int CalcHeight = vi.height - 1;
             int CalcWidth = vi.width - 1;
             bool IsOddLine;
@@ -132,11 +137,12 @@ namespace Business {
                     // Todo: x=0
                 }
                 for (int x = IsOddLine ? 2 : 1; x < CalcWidth; x += 2) {
-                    Val[0] = dst[x - 1];
-                    Val[1] = dst[x + 1];
-                    Val[2] = dst[x - dstPitch];
-                    Val[3] = dst[x + dstPitch];
-                    dst[x] = (byte)(((int)Val[0] + Val[1] + Val[2] + Val[3]) / 4);
+                    Val.Clear();
+                    Val.Add(dst[x - 1]);
+                    Val.Add(dst[x + 1]);
+                    Val.Add(dst[x - dstPitch]);
+                    Val.Add(dst[x + dstPitch]);
+                    dst[x] = GetMedian(Val);
                 }
                 if (!IsOddLine) {
                     // Todo: x=last
@@ -148,6 +154,30 @@ namespace Business {
             // Todo: x=0
             for (int x = 1; x < CalcWidth; x += 2) {
             }
+        }
+
+        /// <summary>
+        /// Returns the median of specified list.
+        /// </summary>
+        /// <param name="list">The list of values to find the median for.</param>
+        /// <returns>The median value.</returns>
+        public static byte GetMedian(List<byte> list) {
+            int count = list.Count;
+            list.Sort();
+
+            byte medianValue = 0;
+
+            if (count % 2 == 0) {
+                // count is even, need to get the middle two elements, add them together, then divide by 2
+                byte middleElement1 = list[(count / 2) - 1];
+                byte middleElement2 = list[(count / 2)];
+                medianValue = (byte)(((int)middleElement1 + middleElement2) / 2);
+            } else {
+                // count is odd, simply get the middle element.
+                medianValue = list[(count / 2)];
+            }
+
+            return medianValue;
         }
     }
 }
