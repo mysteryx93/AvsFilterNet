@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AvsFilterNet", "avsfilternet\AvsFilterNet.vcxproj", "{6679C5BF-BD2A-454F-9A97-719A00CD5BE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSampleNet", "SimpleSampleNet\SimpleSampleNet.csproj", "{EAAB0AD8-6962-429F-9A98-559AB5C93FE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterProcessSample", "InterProcessSample\InterProcessSample.csproj", "{9BA8B3F5-C43A-4DA8-A4B7-D10AA5EEC54D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedianUpscaler", "MedianUpscaler\MedianUpscaler.csproj", "{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,30 +96,6 @@ Global
 		{9BA8B3F5-C43A-4DA8-A4B7-D10AA5EEC54D}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
 		{9BA8B3F5-C43A-4DA8-A4B7-D10AA5EEC54D}.RelWithDebInfo|x86.ActiveCfg = Release|Any CPU
 		{9BA8B3F5-C43A-4DA8-A4B7-D10AA5EEC54D}.RelWithDebInfo|x86.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|x64.Build.0 = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Debug|x86.Build.0 = Debug|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|x64.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|x64.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|x86.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.Release|x86.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|Any CPU.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|Any CPU.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|Mixed Platforms.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|x64.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|x86.ActiveCfg = Release|Any CPU
-		{3BD6AC5A-ECAB-45ED-871F-31449E516DBB}.RelWithDebInfo|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

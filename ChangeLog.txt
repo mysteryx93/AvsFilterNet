@@ -1,3 +1,11 @@
+v1.0.3: March 21st 2017
+- Fixed crash when an expection is thrown
+- Can now initialize filter without child
+- Fixed the code of LoadImageNet sample
+- Added LoadAllPlugins sample that calls LoadPlugin and then calls the function
+- Compiled with Visual Studio 2017
+
+
 v1.0.2: July 11th 2016
 - Fixed ExecuteBefore
 - Fixed VideoFrame not being properly released

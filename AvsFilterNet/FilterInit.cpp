@@ -21,7 +21,8 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 			return V->GetNative();
 		}
 		else {
-			Filter->SetChild(V->AsClip());
+			if (V->IsClip())
+				Filter->SetChild(V->AsClip());
 			Filter->Initialize(gcnew AvsFilterNet::AVSValue(args), envM);
 			// If we're using this class, Finalize will be called at the end.
 			V = gcnew AvsFilterNet::AVSValue(gcnew Clip(Filter->GetNativeStub()));
@@ -35,7 +36,9 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 	catch (AvisynthException^ ex) {
 		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(ex->Message).ToPointer());
 	}
-	catch (Exception^ ex) {
+	catch (FilterNotFoundException^ ex) {
+		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(ex->Message).ToPointer());
+	} catch (Exception^ ex) {
 		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(filterType->Name + " initialization error: " + ex->ToString()).ToPointer());
 	}
 	finally {

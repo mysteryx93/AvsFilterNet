@@ -63,7 +63,7 @@ namespace AvsFilterNet {
 		const char** p_arg_names = NULL;
 		if (arg_names&&arg_names->Length > 0) {
 			n_arg_names = gcnew List<NativeString^>(arg_names->Length);
-			p_arg_names = (const char**)malloc(sizeof(char*)*arg_names->Length);
+			p_arg_names = (const char**)malloc(sizeof(char*) * arg_names->Length);
 			for (int i = 0; i < arg_names->Length; i++) {
 				if (String::IsNullOrEmpty(arg_names[i])) {
 					p_arg_names[i] = NULL;

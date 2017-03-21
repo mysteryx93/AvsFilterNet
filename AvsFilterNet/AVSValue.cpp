@@ -88,7 +88,9 @@ namespace AvsFilterNet {
 		AVSValueCollector::OnAVSValueCreate(this);
 	};
 	NativeAVSValue AVSValue::GetNative() {
-		if (_nts) return NativeAVSValue(::_strdup(_nts->GetPointer()));
-		return NativeAVSValue(*_value);
+		if (_nts)
+			return NativeAVSValue(::_strdup(_nts->GetPointer()));
+		else
+			return NativeAVSValue(*_value);
 	};
 }

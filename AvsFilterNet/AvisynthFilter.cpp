@@ -18,11 +18,13 @@ namespace AvsFilterNet {
 	}
 
 	AVSValue^ AvisynthFilter::ExecuteBefore(AVSValue^ args, bool% cancelLoad, ScriptEnvironment^ env) {
-		return gcnew AVSValue(args[0]->AsClip());
+		//return gcnew AVSValue(args[0]->AsClip());
+		return args[0];
 	}
 
 	AVSValue^ AvisynthFilter::ExecuteAfter(AVSValue^ clip, ScriptEnvironment^ env) {
-		return gcnew AVSValue(clip->AsClip());
+		return clip;
+		//return gcnew AVSValue(clip->AsClip());
 	}
 
 	Clip^ AvisynthFilter::Child::get() {
