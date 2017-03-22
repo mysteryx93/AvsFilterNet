@@ -1,3 +1,8 @@
+v1.0.4: March 22nd 2017
+- Error messages no longer include full stack trace
+- Overriding GetFrame function is now optional
+
+
 v1.0.3: March 21st 2017
 - Fixed crash when an expection is thrown
 - Can now initialize filter without child

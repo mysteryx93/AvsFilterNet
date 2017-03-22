@@ -43,7 +43,7 @@ namespace AvsFilterNet {
 		/// <param name='n'>Requested frame number.</param>
 		/// <param name='env'>Script environment object.</param>
 		/// <returns>A <see cref="VideoFrame"/>. If null (or Nothing in Visual Basic) is returned, the frame will be fetched from <see cref="Child"/>.</returns>
-		virtual VideoFrame^ GetFrame(int n, ScriptEnvironment^ env) abstract;
+		virtual VideoFrame^ GetFrame(int n, ScriptEnvironment^ env);
 		virtual void GetAudio(IntPtr buf, __int64 start, __int64 count, ScriptEnvironment^ env);
 		virtual bool GetParity(int n);
 		virtual int SetCacheHints(CacheType cachehints, int frame_range);  // We do not pass cache requests upwards, only to the next filter.

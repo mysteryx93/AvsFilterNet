@@ -27,6 +27,10 @@ namespace AvsFilterNet {
 		//return gcnew AVSValue(clip->AsClip());
 	}
 
+	VideoFrame^ AvisynthFilter::GetFrame(int n, ScriptEnvironment^ env) {
+		return _child->GetFrame(n, env);
+	}
+
 	Clip^ AvisynthFilter::Child::get() {
 		return _child;
 	}

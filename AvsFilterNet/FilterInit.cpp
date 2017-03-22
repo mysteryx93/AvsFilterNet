@@ -39,7 +39,7 @@ NativeAVSValue CreateNetPluginImpl(NativeAVSValue &args, void *user_data, IScrip
 	catch (FilterNotFoundException^ ex) {
 		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(ex->Message).ToPointer());
 	} catch (Exception^ ex) {
-		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(filterType->Name + " initialization error: " + ex->ToString()).ToPointer());
+		env->ThrowError((char *)Marshal::StringToHGlobalAnsi(filterType->Name + " initialization error: " + ex->Message).ToPointer());
 	}
 	finally {
 		delete col;
