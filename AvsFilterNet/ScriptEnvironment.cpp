@@ -114,14 +114,18 @@ namespace AvsFilterNet {
 	bool ScriptEnvironment::SetVar(String^ name, AVSValue^ val) {
 		NativeString^ nname = gcnew NativeString(name);
 		bool ret = _env->SetVar(nname->GetPointer(), (val->GetNative()));
-		delete nname;
+		if (!ret) {
+			delete nname;
+		}
 		return ret;
 	}
 
 	bool ScriptEnvironment::SetGlobalVar(String^ name, AVSValue^ val) {
 		NativeString^ nname = gcnew NativeString(name);
 		bool ret = _env->SetGlobalVar(nname->GetPointer(), (val->GetNative()));
-		delete nname;
+		if (!ret) {
+			delete nname;
+		}
 		return ret;
 	}
 
