@@ -21,6 +21,7 @@ namespace AvsFilterNet {
 	void Clip::CleanUp()
 	{
 		_clip = NULL;
+		delete _pclip;
 		_pclip = NULL;
 	}
 
